@@ -2,13 +2,13 @@ name: Top-api Docker
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@master
+      - uses: action/checkout@main
       - name: Publish to registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
