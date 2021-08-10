@@ -1,19 +1,22 @@
-name: Top-api Docker
+name: Publish Docker
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@master
-      - name: Publish to registry
+      - uses: actions/checkout@master
+      - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
           registry: docker.pkg.github.com
           name: docker.pkg.github.com/Deadmanch/top-api/top-api
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+<<<<<<< HEAD
           tags: 'develop'
+=======
+>>>>>>> 7bc0b21bde058f64874ee2e37a3ea2ed7b324a32
