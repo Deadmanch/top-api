@@ -1,8 +1,8 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine
 WORKDIR /opt/app
-COPY package*.json ./
-RUN npm install
-COPY . .
+ADD package.json package.json
+RUN npm i
+ADD . .
 RUN npm run build
 RUN npm prune --production
 CMD ["node", "./dist/main.js"]

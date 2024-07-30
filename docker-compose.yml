@@ -8,10 +8,16 @@ services:
       - 3000:3000
     volumes:
       - ./.env:/opt/app/.env
-    networks:
-      - mongo_network
 
-networks:
-  mongo_network:
-    name: mongo_default
-    external: true
+  top-api.mongo:
+    image: mongo
+    restart: always
+    container_name: top-api.mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+
+    volumes:
+      - ./mongo-data:/data/db
