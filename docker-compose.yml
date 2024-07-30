@@ -7,4 +7,11 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./.env:/app/.env
+      - ./.env:/opt/app/.env
+    networks:
+      - mongo_network
+
+networks:
+  mongo_network:
+    name: mongo_default
+    external: true
