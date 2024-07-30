@@ -1,7 +1,7 @@
 version: '3'
 services:
   top-api:
-    image: top-api:latest
+    image: ghcr.io/deadmanch/top-api/top-api:develop
     restart: always
     container_name: top-api
     ports:
