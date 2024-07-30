@@ -22,6 +22,7 @@ export class HhData {
 export class TopPageAdvantage {
 	@Prop()
 	title: string;
+
 	@Prop()
 	description: string;
 }
@@ -43,6 +44,12 @@ export class PageModel {
 	title: string;
 
 	@Prop()
+	metaTitle: string;
+
+	@Prop()
+	metaDescription: string;
+
+	@Prop()
 	category: string;
 
 	@Prop({ type: () => HhData })
@@ -62,3 +69,4 @@ export class PageModel {
 }
 
 export const PageSchema = SchemaFactory.createForClass(PageModel);
+PageSchema.index({ '$**': 'text' });
