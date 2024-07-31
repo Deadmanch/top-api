@@ -19,6 +19,9 @@ export class PageService {
 	async findByAlias(alias: string) {
 		return this.pageModel.findOne({ alias }).exec();
 	}
+	async findAll() {
+		return this.pageModel.find({}).exec();
+	}
 	async findByText(text: string) {
 		return this.pageModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
 	}

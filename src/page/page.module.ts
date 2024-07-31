@@ -8,5 +8,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 	controllers: [PageController],
 	providers: [PageService],
 	imports: [MongooseModule.forFeature([{ name: PageModel.name, schema: PageSchema }])],
+	exports: [PageService],
 })
 export class PageModule {}
