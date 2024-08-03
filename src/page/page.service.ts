@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PageDocument, PageModel, TopLevelCategory } from './model/page.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreatePageDto } from './dto/create-page.dto';
+import { subDays } from 'date-fns';
 
 @Injectable()
 export class PageService {
@@ -36,11 +37,23 @@ export class PageService {
 			.exec();
 	}
 
+	async findForHhUpdate(date: Date) {
+		return this.pageModel
+			.find({
+				firstCategory: 0,
+				$or: [
+					{ 'hh.updatedAt': { $lt: subDays(date, 1) } },
+					{ 'hh.updatedAt': { $exists: false } },
+				],
+			})
+			.exec();
+	}
+
 	async deleteById(id: string) {
 		return this.pageModel.findByIdAndDelete(id).exec();
 	}
 
-	async updateById(id: string, dto: CreatePageDto) {
+	async updateById(id: string | Types.ObjectId, dto: CreatePageDto) {
 		return this.pageModel.findByIdAndUpdate(id, dto, { new: true }).exec();
 	}
 }

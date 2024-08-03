@@ -1,3 +1,4 @@
+import { HhService } from './../hh/hh.service';
 import {
 	Body,
 	Controller,
@@ -18,10 +19,15 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { PageService } from './page.service';
 import { PageErrors } from './page.constants';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 
 @Controller('page')
 export class PageController {
-	constructor(private readonly pageService: PageService) {}
+	constructor(
+		private readonly pageService: PageService,
+		private readonly HhService: HhService,
+		private readonly scheduleRegistry: SchedulerRegistry,
+	) {}
 	@UseGuards(JwtAuthGuard)
 	@UsePipes(new ValidationPipe())
 	@Post('create')
@@ -78,5 +84,15 @@ export class PageController {
 	@Get('textSearch/:text')
 	async textSearch(@Param('text') text: string) {
 		return this.pageService.findByText(text);
+	}
+
+	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+	async updateHhData() {
+		const data = await this.pageService.findForHhUpdate(new Date());
+		for (const page of data) {
+			const hhData = await this.HhService.getData(page.category);
+			page.hh = hhData;
+			await this.pageService.updateById(page._id, page);
+		}
 	}
 }
